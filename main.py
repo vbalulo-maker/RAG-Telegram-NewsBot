@@ -7,6 +7,37 @@ from utils.summarizer import summarize_text
 from utils.telegram_bot import send_telegram_message
 from utils.rag_store import add_summary_to_store
 
+# === НОВЫЙ БЛОК: Ваши ключевые слова для фильтрации ===
+# Добавьте сюда все ваши темы и их синонимы (на русском и английском)
+MY_TOPICS = {
+    "финтех": ["финтех", "fintech"],
+    "ИИ": ["ии", "ai", "artificial intelligence"],
+    "психология": ["психология", "psychology"],
+    "продуктивность": ["продуктивность", "productivity"],
+    "экономика": ["экономические исследования", "поведенческая экономика", "economics"],
+    # "клинцы": ["клинцы", "klintsy"],
+    # "цска": ["цска", "cska"],
+    # "исследования": ["яков и партнеры", "markswebb", "frank rg", "data insight"],
+}
+
+def is_article_relevant(title, summary):
+    """
+    Проверяет, соответствует ли статья хотя бы одной теме из MY_TOPICS.
+    Возвращает True, если статья подходит.
+    """
+    # Объединяем заголовок и краткое содержание для поиска
+    text_to_check = (title + " " + summary).lower()
+    
+    for topic, keywords in MY_TOPICS.items():
+        # Проверяем, есть ли в тексте ВСЕ слова из текущей темы
+        # (например, для "финтех" должны быть и "финтех", и "fintech"? 
+        # Если нужно ИЛИ, замените all на any)
+        if any(keyword in text_to_check for keyword in keywords):
+            return True
+    return False
+
+# === КОНЕЦ НОВОГО БЛОКА ===
+
 def main():
     print("Starting RAG Telegram Scheduler...\n")
 
@@ -24,7 +55,13 @@ def main():
         print(f"[{idx}] Summarizing: {article['title'][:80]}...")
         summary = summarize_text(article["summary"])
 
-        # Step 3: Format Telegram message
+        # === НОВЫЙ ШАГ: Фильтрация по темам ===
+        # Если статья НЕ подходит по темам, пропускаем её (не отправляем и не сохраняем)
+        if not is_article_relevant(article['title'], summary):
+            print(f"  → Skipped: does not match any topic.")
+            continue  # Переходим к следующей статье
+
+        # Step 3: Format Telegram message (только для подходящих статей)
         message = (
             f"<b>{article['title']}</b>\n\n"
             f"{summary}\n\n"
