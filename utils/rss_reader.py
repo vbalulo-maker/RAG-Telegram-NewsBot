@@ -30,10 +30,22 @@ def fetch_new_articles():
         for entry in feed.entries[:5]:  # limit to 5 per feed
             link = entry.link
             if link not in cache["processed_links"]:
+                # === БЕЗОПАСНОЕ ПОЛУЧЕНИЕ СОДЕРЖАНИЯ ===
+                # Пробуем взять summary, если нет — берём description, если нет — пустую строку
+                raw_content = ""
+                if hasattr(entry, 'summary'):
+                    raw_content = entry.summary
+                elif hasattr(entry, 'description'):
+                    raw_content = entry.description
+                # Если есть content, можно взять первый элемент
+                elif hasattr(entry, 'content') and entry.content:
+                    raw_content = entry.content[0].value
+                # === КОНЕЦ БЛОКА ===
+
                 article = {
                     "source": feed.feed.title if "title" in feed.feed else "Unknown Source",
                     "title": entry.title,
-                    "summary": clean_html(entry.summary),
+                    "summary": clean_html(raw_content),  # теперь raw_content всегда определён
                     "link": link,
                     "published": getattr(entry, "published", str(datetime.now())),
                 }
