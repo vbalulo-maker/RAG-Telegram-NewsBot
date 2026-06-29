@@ -21,9 +21,16 @@ TELEGRAM_CHAT_ID = os.getenv("CHAT_ID", "YOUR_CHAT_ID_HERE")
 # Add as many RSS feeds as you like — you can mix news, blogs, etc.
 
 RSS_FEEDS = [
-    "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml",
     "https://news.google.com/rss?hl=en-IN&gl=IN&ceid=IN:en",
-    "https://www.theverge.com/rss/index.xml"
+    "https://www.rbc.ru/quote/category/all%20rss",
+    "https://www.vedomosti.ru/rss/rubric/finance",
+    "https://www.vedomosti.ru/rss/rubric/economics",
+    "https://www.vedomosti.ru/rss/rubric/business",
+    "https://www.kommersant.ru/rss/main.xml",
+    "https://www.rt.com/rss-feeds/",
+    "https://russian.rt.com/news%20rss",
+    "http://www.cbr.ru/rss/RssPress",
+    "http://www.cbr.ru/rss/eventrss"
 ]
 
 # -------------------------------
