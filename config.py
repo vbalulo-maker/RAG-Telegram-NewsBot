@@ -37,7 +37,9 @@ RSS_FEEDS = [
     # Новые локальные источники для Клинцов
     "https://klintsy.info/rss",
     "http://special.bryanskobl.ru/rss",
-    "https://guberniya.tv/rss"
+    "https://guberniya.tv/rss",
+    "https://rss.app/rss-feed/championat-com-rss-feed"
+    "https://klintsy.gosuslugi.ru/dlya-zhiteley/novosti-i-reportazhi/"
 ]
 
 # -------------------------------
