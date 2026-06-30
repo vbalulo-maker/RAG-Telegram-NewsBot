@@ -77,3 +77,18 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+from utils.football_fetcher import get_football_news
+
+def main():
+    # ... ваш существующий код для RSS и фильтрации ...
+    
+    # --- Добавьте этот блок ---
+    # Получаем и отправляем футбольные результаты
+    football_message = get_football_news()
+    if football_message:
+        # Отправляем отдельным сообщением
+        send_telegram_message(football_message)
+        print("Football data sent!")
+    # --- Конец блока ---
